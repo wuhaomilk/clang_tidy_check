@@ -2,7 +2,6 @@
 Checks:          'boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*'
 WarningsAsErrors: 'Readability-redundant-control-flow,Readability-implicit-bool-conversion,Cppcoreguidelines-init-variables,Modernize-deprecated-headers,Readability-braces-around-statements,readability-container-size-empty,Bugprone-narrowing-conversions,Readability-delete-null-pointer,Bugprone-forward-declaration-namespace,Performance-faster-string-find,Readability-inconsistent-declaration-parameter-name,Readability-misleading-indentation,Readability-const-return-type,Clang-diagnostic-unused-parameter,Bugprone-exception-escape,Performance-inefficient-algorithm,Performance-inefficient-string-concatenation,'
 HeaderFilterRegex: '-*'
-SystemHeaders    : '-*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            clayderman
