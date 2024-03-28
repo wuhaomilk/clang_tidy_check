@@ -14,32 +14,32 @@ no_color='\033[0m'
 
 echo -e "${green_bg}-------------------Start Static Code Check------------------  ${no_color}"
 
-# 0、clone/hj_git_base.git
-if [ ! -d "$git_root/hj_git_base" ]; then
-  echo -e "${title}1、---------------Repo:hj_git_base not exist, start clone --------------${no_color}"
+# 0、clone/clang_tidy_check.git
+if [ ! -d "$git_root/clang_tidy_check" ]; then
+  echo -e "${title}1、---------------Repo:clang_tidy_check not exist, start clone --------------${no_color}"
   unset GIT_WORK_TREE
-  git clone -b main git@192.168.140.233:clayderman/hj_git_base.git
+  git clone -b master git@github.com:wuhaomilk/clang_tidy_check.git
   if [ "$?" -ne "0" ]; then
-    echo -e "${red}(ssh)git clone clayderman/hj_git_base.git !!!${no_color}"
+    echo -e "${red}(ssh)git@github.com:wuhaomilk/clang_tidy_check.git !!!${no_color}"
     exit 1
   fi
 else
-  echo -e "${title}1、---------------update Repo:hj_git_base --------------${no_color}"
-  cd $git_root/hj_git_base
+  echo -e "${title}1、---------------update Repo:clang_tidy_check --------------${no_color}"
+  cd $git_root/clang_tidy_check
   git pull
   cd $git_root
   if [ "$?" -ne "0" ]; then
-    echo -e "${red} update clayderman/hj_git_base.git faild !!!${no_color}"
+    echo -e "${red} update clayderman/clang_tidy_check.git faild !!!${no_color}"
     exit 1
   fi
 fi
 
 # 1、update .git_hooks
 echo -e "${title}2、---------------start update .git_hooks --------------${no_color}"
-cp -a hj_git_base/.git_hooks .
+cp -a clang_tidy_check/.git_hooks .
 echo ""
 cp ${tidy_config} .
-rm -rf hj_git_base
+rm -rf clang_tidy_check
 echo -e "${title}2、---------------end update .git_hooks --------------${no_color}"
 
 # 1、check python version,if 3 not exist, use 2
@@ -74,4 +74,5 @@ echo -e "${warning}---------------clang-tidy result --------------"
 echo -e "clang-tidy check res= ${RES}"
 echo -e "----------------clang-tidy check end --------------${no_color}"
 exit ${RES}
+
 
