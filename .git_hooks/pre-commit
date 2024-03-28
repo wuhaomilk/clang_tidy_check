@@ -1,0 +1,77 @@
+#!/bin/bash
+git_root=`git rev-parse --show-toplevel`
+tidy_config=${git_root}/.git_hooks/scripts/.clang-tidy
+tidy_lint=${git_root}/.git_hooks/scripts/run-clang-tidy-commit.py
+
+title='\033[46;30m'
+red='\033[0;31m'
+green='\033[0;32m'
+warning='\033[33m'
+green_bg='\033[42m'
+message_bg='\033[44m'
+tip_bg='\033[43m'
+no_color='\033[0m'
+
+echo -e "${green_bg}-------------------Start Static Code Check------------------  ${no_color}"
+
+# 0、clone/hj_git_base.git
+if [ ! -d "$git_root/hj_git_base" ]; then
+  echo -e "${title}1、---------------Repo:hj_git_base not exist, start clone --------------${no_color}"
+  unset GIT_WORK_TREE
+  git clone -b main git@192.168.140.233:clayderman/hj_git_base.git
+  if [ "$?" -ne "0" ]; then
+    echo -e "${red}(ssh)git clone clayderman/hj_git_base.git !!!${no_color}"
+    exit 1
+  fi
+else
+  echo -e "${title}1、---------------update Repo:hj_git_base --------------${no_color}"
+  cd $git_root/hj_git_base
+  git pull
+  cd $git_root
+  if [ "$?" -ne "0" ]; then
+    echo -e "${red} update clayderman/hj_git_base.git faild !!!${no_color}"
+    exit 1
+  fi
+fi
+
+# 1、update .git_hooks
+echo -e "${title}2、---------------start update .git_hooks --------------${no_color}"
+cp -a hj_git_base/.git_hooks .
+echo ""
+cp ${tidy_config} .
+rm -rf hj_git_base
+echo -e "${title}2、---------------end update .git_hooks --------------${no_color}"
+
+# 1、check python version,if 3 not exist, use 2
+if [ -x "$(command -v python3)" ]; then
+  python_cmd='python3'
+else
+  echo -e "${warning}Warning: python3 is not installed${no_color}"
+  exit 1
+fi
+
+# 2、check clang-tidy exists
+if [ -x "$(command -v clang-tidy)" ]; then
+  tidy_cmd='clang-tidy'
+else
+  echo -e "${red} Error: clang-tidy is not installed.we need clang-tidy-10${no_color}"
+  exit 1
+fi
+
+
+array_name=()
+FILES=`git diff --staged --name-only --diff-filter=AMC | grep -v third_party | grep -E ".cpp$|.h$|.c$|.cc$"`
+
+for file in ${FILES}; do
+    echo ${file}
+    array_name+=${file}
+    array_name+=","
+done
+
+RES=`$python_cmd $tidy_lint -commit-files=${array_name}`
+
+echo -e "${warning}---------------clang-tidy result --------------"
+echo -e "clang-tidy check res= ${RES}"
+echo -e "----------------clang-tidy check end --------------${no_color}"
+exit ${RES}
+
