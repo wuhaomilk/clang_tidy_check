@@ -58,6 +58,11 @@ else
   exit 1
 fi
 
+if [ -f "${git_root}/build/compile_commands.json" ];then
+  `cp "${git_root}/build/compile_commands.json" ${git_root}`
+else
+  echo "compile_commands.json not exit, please make the project"
+fi
 
 array_name=()
 FILES=`git diff --staged --name-only --diff-filter=AMC | grep -v third_party | grep -E ".cpp$|.h$|.c$|.cc$"`
@@ -68,7 +73,7 @@ for file in ${FILES}; do
     array_name+=","
 done
 
-RES=`$python_cmd $tidy_lint -commit-files=${array_name}`
+RES=`$python_cmd $tidy_lint -commit-files=${array_name} -p ${git_root}`
 
 echo -e "${warning}---------------clang-tidy result --------------"
 echo -e "clang-tidy check res= ${RES}"

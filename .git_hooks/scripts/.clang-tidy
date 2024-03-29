@@ -1,6 +1,6 @@
 ---
-Checks:          'boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*'
-WarningsAsErrors: 'Readability-redundant-control-flow,Readability-implicit-bool-conversion,Cppcoreguidelines-init-variables,Modernize-deprecated-headers,Readability-braces-around-statements,readability-container-size-empty,Bugprone-narrowing-conversions,Readability-delete-null-pointer,Bugprone-forward-declaration-namespace,Performance-faster-string-find,Readability-inconsistent-declaration-parameter-name,Readability-misleading-indentation,Readability-const-return-type,Clang-diagnostic-unused-parameter,Bugprone-exception-escape,Performance-inefficient-algorithm,Performance-inefficient-string-concatenation,'
+Checks:          'boost-*,bugprone-*,performance-*,readability-*,portability-*,modernize-*,clang-analyzer-*,cppcoreguidelines-*,-cppcoreguidelines-pro-bounds-array-to-pointer-decay, -modernize-use-trailing-return-type,-readability-uppercase-literal-suffix,-cppcoreguidelines-macro-usage,-bugprone-macro-parentheses, -cppcoreguidelines-pro-type-vararg'
+WarningsAsErrors: 'readability-redundant-control-flow,readability-implicit-bool-conversion,cppcoreguidelines-init-variables,modernize-deprecated-headers,readability-braces-around-statements,readability-container-size-empty,bugprone-narrowing-conversions,readability-delete-null-pointer,bugprone-forward-declaration-namespace,performance-faster-string-find,readability-inconsistent-declaration-parameter-name,readability-misleading-indentation,readability-const-return-type,clang-diagnostic-unused-parameter,bugprone-exception-escape,performance-inefficient-string-algorithm,performance-inefficient-string-concatenation,'
 HeaderFilterRegex: '-*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
@@ -35,4 +35,5 @@ CheckOptions:
   - key:             modernize-use-nullptr.NullMacros
     value:           'NULL'
 ...
+
 
